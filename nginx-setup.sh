@@ -21,7 +21,7 @@ cat <<EOL > /var/www/html/index.html
 <body>
     <header>
         <h1>Rufai Adeniyi</h1>
-        <p>Username: @neyo55</p>
+        <p>Username: @Rufai Adeniyi</p>
         <p>Email: kbneyo55@gmail.com</p>
     </header>
     <nav>
