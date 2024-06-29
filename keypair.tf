@@ -4,7 +4,7 @@
 # Ensure the directory for storing the private key exists 
 resource "local_file" "private_key" {
   content  = tls_private_key.my_private_key.private_key_pem
-  filename = "${path.module}/key/static-web-key.pem"
+  filename = "${path.module}/file/static-web-key.pem"
 }
 
 # Create a key pair in AWS
