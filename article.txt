@@ -1,19 +1,21 @@
 
-# Static Website Deployment on AWS EC2 using Terraform
+# Deploying a Static Website on AWS EC2 Using Terraform
 
-## Project Description
+## Introduction
 
-This project involves deploying a static website on an AWS EC2 instance using Terraform. The website includes a simple HTML page styled with CSS and enhanced with JavaScript functionality. The deployment script also sets up NGINX to serve the website.
+In this tutorial, I'll walk you through deploying a static website on an AWS EC2 instance using Terraform. The website includes a simple HTML page styled with CSS and enhanced with JavaScript functionality. We'll also set up NGINX to serve the website. You can find the complete setup files in my [GitHub repository](https://github.com/username/static-website-deployment).
 
 ## Prerequisites
 
-Before deploying this project, ensure you have the following:
+Before we begin, ensure you have the following:
 
-1. **Terraform** installed on your local machine. [Installation Guide](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-2. **AWS CLI** installed and configured with appropriate permissions to create resources. [Installation Guide](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-3. An AWS account with permissions to create VPC, Subnets, Security Groups, EC2 Instances, and Key Pairs.
+1. **Terraform** installed on your local machine. You can follow this [installation guide](https://learn.hashicorp.com/tutorials/terraform/install-cli) if you haven't installed it yet.
+2. **AWS CLI** installed and configured with appropriate permissions to create resources. You can follow this [installation guide](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
+3. An AWS account with permissions to create VPCs, Subnets, Security Groups, EC2 Instances, and Key Pairs.
 
 ## Project Structure
+
+Here's an overview of the project files:
 
 - `provider.tf`: Configures the AWS provider.
 - `network.tf`: Creates the VPC, Subnet, Internet Gateway, and Route Table.
@@ -22,49 +24,67 @@ Before deploying this project, ensure you have the following:
 - `instance.tf`: Creates the EC2 instance and deploys the static website.
 - `variables.tf`: Defines the variables used in the Terraform configuration.
 - `terraform.tfvars`: Contains the values for the variables defined in `variables.tf`.
-- `output.tf`: This output the public ip of the instance after applying the configuration.
 - `nginx-setup.sh`: Bash script to install NGINX and set up the static website.
 - `website/index.html`: The HTML file for the static website.
 - `website/styles.css`: The CSS file for the static website.
 - `website/script.js`: The JavaScript file for the static website.
 
-## Deployment Instructions
+## Deployment Steps
 
-1. **Clone the repository**:
-    ```bash
-    git clone <repository-url>
-    cd <repository-directory>
-    ```
+### Step 1: Clone the Repository
 
-2. **Review and modify variable values** in `terraform.tfvars` as necessary.
+First, clone the repository to your local machine:
 
-3. **Initialize Terraform**:
-    ```bash
-    terraform init
-    ```
+```bash
+git clone https://github.com/username/static-website-deployment.git
+cd static-website-deployment
+```
 
-4. **Validate the setup**:
-    ```bash
-    terraform validate
-    ```
+### Step 2: Review and Modify Variables
 
-5. **Plan the setup to detect errors**:
-    ```bash
-    terraform plan
-    ```
+Review the variable values in `terraform.tfvars` and modify them as necessary to suit your requirements.
 
-6. **Apply the Terraform configuration**:
-    ```bash
-    terraform apply --auto-approve
-    ```
+### Step 3: Initialize Terraform
 
-**Access the deployed website** using the public IP address of the created EC2 instance with the port 80 that was allowed, which will be displayed as an output after applying the Terraform configuration. For example, http://3.255.161.200:80
+Initialize the Terraform working directory:
+
+```bash
+terraform init
+```
+
+### Step 4: Validate the Setup
+
+Validate the configuration to ensure everything is set up correctly:
+
+```bash
+terraform validate
+```
+
+### Step 5: Plan the Deployment
+
+Generate and review an execution plan to verify the resources that will be created:
+
+```bash
+terraform plan
+```
+
+### Step 6: Apply the Terraform Configuration
+
+Apply the configuration to create the resources:
+
+```bash
+terraform apply --auto-approve
+```
+
+### Step 7: Access the Website
+
+Once the deployment is complete, you can access the website using the public IP address of the created EC2 instance. The public IP address will be displayed as an output after applying the Terraform configuration. For example: `http://<public-ip>:80`
 
 ## Configuration Details
 
-### Provider Configuration (`provider.tf`)
+### Provider Configuration
 
-This file sets up the AWS provider with the specified region and profile.
+The `provider.tf` file sets up the AWS provider with the specified region and profile.
 
 ```hcl
 terraform {
@@ -82,9 +102,9 @@ provider "aws" {
 }
 ```
 
-### Network Configuration (`network.tf`)
+### Network Configuration
 
-This file creates a VPC, Subnet, Internet Gateway, and Route Table.
+The `network.tf` file creates a VPC, Subnet, Internet Gateway, and Route Table.
 
 ```hcl
 resource "aws_vpc" "static_website_vpc" {
@@ -128,9 +148,9 @@ resource "aws_route_table_association" "static_website_route_table_association" 
 }
 ```
 
-### Security Group Configuration (`security-group.tf`)
+### Security Group Configuration
 
-This file creates a security group that allows SSH and HTTP traffic.
+The `security-group.tf` file creates a security group that allows SSH and HTTP traffic.
 
 ```hcl
 resource "aws_security_group" "static_website_security_group" {
@@ -168,9 +188,9 @@ resource "aws_security_group" "static_website_security_group" {
 }
 ```
 
-### Key Pair Configuration (`keypair.tf`)
+### Key Pair Configuration
 
-This file generates an SSH key pair and stores the private key locally in the folder named 'file'. Make sure the folder is created in the root directory of your setup files before applying the configuration.
+The `keypair.tf` file generates an SSH key pair and stores the private key locally in the `file` folder.
 
 ```hcl
 resource "local_file" "private_key" {
@@ -189,9 +209,9 @@ resource "tls_private_key" "my_private_key" {
 }
 ```
 
-### EC2 Instance Configuration (`instance.tf`)
+### EC2 Instance Configuration
 
-This file creates the EC2 instance and deploys the static website using a user data script.
+The `instance.tf` file creates the EC2 instance and deploys the static website using a user data script.
 
 ```hcl
 data "aws_ami" "ubuntu_static_website" {
@@ -253,28 +273,8 @@ static_website_keypair_name = "static-web-key"
 instance_type_static_website = "t2.micro"
 ```
 
-## Usage
+## Conclusion
 
-1. **Initialize Terraform**:
-    ```bash
-    terraform init
-    ```
+By following this tutorial, you have successfully deployed a static website on an AWS EC2 instance using Terraform. You can access the website using the public IP address of the EC2 instance. For more details and to access the setup files, visit my [GitHub repository](https://github.com/username/static-website-deployment).
 
-2. **Plan the setup to detect errors**:
-    ```bash
-    terraform plan
-    ```
-
-3. **Apply the Terraform configuration**:
-    ```bash
-    terraform apply --auto-approve
-    ```
-
-4. **Access the deployed website** using the public IP address displayed in the output.
-
-## License
-
-This project is licensed under the MIT License.
-```
-
-You can modify this README template as needed to fit your project specifics. If you need any more details or adjustments, let me know! kbneyo55@gmail.com
+You can customize it to your taste.
